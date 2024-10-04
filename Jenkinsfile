@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -5,7 +6,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Clona il repository dal Git configurato
-                git branch: 'main', url: 'https://github.com/encode/django-rest-framework.git'
+                git branch: 'master', url: 'https://github.com/Crixsteen/django-rest-framework.git'
             }
         }
 
@@ -39,4 +40,5 @@ pipeline {
         }
     }
 }
+
 
