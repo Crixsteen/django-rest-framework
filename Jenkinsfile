@@ -4,15 +4,20 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-
                 git branch: 'master', url: 'https://github.com/Crixsteen/django-rest-framework.git'
             }
         }
 
         stage('Install') {
             steps {
+                // Verifica la versione di Python
+                sh 'python3 --version || python --version'
+                
+                // Assicura che pip sia installato
+                sh 'python3 -m ensurepip --upgrade || python -m ensurepip --upgrade'
+                
                 // Installa pytest
-                sh 'pip install pytest'
+                sh 'pip3 install pytest || pip install pytest'
             }
         }
 
@@ -42,6 +47,4 @@ pipeline {
         }
     }
 }
-
-
 
