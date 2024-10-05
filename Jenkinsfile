@@ -1,6 +1,5 @@
 pipeline {
     agent {
-        // Utilizza l'immagine Docker di Python 3.9
         docker { image 'python:3.9' }
     }
 
@@ -13,7 +12,7 @@ pipeline {
 
         stage('Install pytest') {
             steps {
-                // Installa pytest utilizzando pip
+                // Installa pytest
                 sh 'pip install pytest'
             }
         }
