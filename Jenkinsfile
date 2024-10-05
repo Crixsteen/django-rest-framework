@@ -8,14 +8,24 @@ pipeline {
             }
         }
 
-        stage('Install') {
+        stage('Install Python & pip') {
             steps {
-                // Verifica la versione di Python
-                sh 'python3 --version || python --version'
-                
-                // Assicura che pip sia installato
-                sh 'python3 -m ensurepip --upgrade || python -m ensurepip --upgrade'
-                
+                // Installa Python e pip se non sono presenti
+                sh '''
+                    if ! command -v python3 &> /dev/null; then
+                        echo "Python3 non trovato. Installo Python3."
+                        sudo apt-get update
+                        sudo apt-get install -y python3 python3-pip
+                    fi
+                    python3 --version
+                    pip3 --version
+
+                '''
+            }
+        }
+
+        stage('Install pytest') {
+            steps {
                 // Installa pytest
                 sh 'pip3 install pytest || pip install pytest'
             }
