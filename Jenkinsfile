@@ -1,5 +1,8 @@
 pipeline {
-    agent any
+    agent {
+        // Utilizza l'immagine Docker di Python 3.9
+        docker { image 'python:3.9' }
+    }
 
     stages {
         stage('Checkout Code') {
@@ -8,26 +11,10 @@ pipeline {
             }
         }
 
-        stage('Install Python & pip') {
-            steps {
-                // Installa Python e pip se non sono presenti
-                sh '''
-                    if ! command -v python3 &> /dev/null; then
-                        echo "Python3 non trovato. Installo Python3."
-                        sudo apt-get update
-                        sudo apt-get install -y python3 python3-pip
-                    fi
-                    python3 --version
-                    pip3 --version
-
-                '''
-            }
-        }
-
         stage('Install pytest') {
             steps {
-                // Installa pytest
-                sh 'pip3 install pytest || pip install pytest'
+                // Installa pytest utilizzando pip
+                sh 'pip install pytest'
             }
         }
 
@@ -57,4 +44,5 @@ pipeline {
         }
     }
 }
+
 
