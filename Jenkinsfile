@@ -8,36 +8,15 @@ pipeline {
             }
         }
 
-        stage('Use Docker for Python') {
-            agent {
-                docker { image 'python:3.9' }
-            }
-            stages {
-                stage('Install pytest') {
-                    steps {
-                        // Installa pytest
-                        sh 'pip install pytest'
-                    }
-                }
-
-                stage('Build') {
-                    steps {
-                        echo 'Building the project...'
-                    }
-                }
-
-                stage('Test') {
-                    steps {
-                        echo 'Running tests...'
-                        sh 'pytest'
-                    }
-                }
-
-                stage('Deploy') {
-                    steps {
-                        echo 'Deploying the project...'
-                    }
-                }
+        stage('Run in Docker') {
+            steps {
+                // Esegui il codice nel container Docker Python 3.9
+                sh '''
+                    docker run --rm -v $(pwd):/app -w /app python:3.9 bash -c "
+                    pip install pytest &&
+                    pytest
+                    "
+                '''
             }
         }
     }
@@ -48,4 +27,5 @@ pipeline {
         }
     }
 }
+
 
