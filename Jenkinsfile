@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'python:3.9' }
-    }
+    agent any
 
     stages {
         stage('Checkout Code') {
@@ -10,29 +8,36 @@ pipeline {
             }
         }
 
-        stage('Install pytest') {
-            steps {
-                // Installa pytest
-                sh 'pip install pytest'
+        stage('Use Docker for Python') {
+            agent {
+                docker { image 'python:3.9' }
             }
-        }
+            stages {
+                stage('Install pytest') {
+                    steps {
+                        // Installa pytest
+                        sh 'pip install pytest'
+                    }
+                }
 
-        stage('Build') {
-            steps {
-                echo 'Building the project...'
-            }
-        }
+                stage('Build') {
+                    steps {
+                        echo 'Building the project...'
+                    }
+                }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests...'
-                sh 'pytest'
-            }
-        }
+                stage('Test') {
+                    steps {
+                        echo 'Running tests...'
+                        sh 'pytest'
+                    }
+                }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying the project...'
+                stage('Deploy') {
+                    steps {
+                        echo 'Deploying the project...'
+                    }
+                }
             }
         }
     }
@@ -43,5 +48,4 @@ pipeline {
         }
     }
 }
-
 
